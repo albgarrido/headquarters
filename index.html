@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Headquarters - Hire and Manage Your AI Workforce</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::selection { background: #fff; color: #000; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const Logo = ({ className = "", size = "default" }) => (
+      <div className={`font-mono font-bold tracking-tight flex items-center gap-1.5 ${className}`}>
+        <span className={size === "small" ? "text-base" : "text-xl"}>headquarters</span>
+        <span className={`${size === "small" ? "w-1.5 h-1.5" : "w-2 h-2"} bg-emerald-500 rounded-sm`}></span>
+      </div>
+    );
+
+    const IntegrationLogo = ({ name, icon }) => (
+      <div className="flex flex-col items-center justify-center w-20 h-20 bg-zinc-950 rounded-xl border border-zinc-800/50 hover:border-zinc-600 hover:bg-zinc-900 transition-all group cursor-default">
+        <span className="text-2xl mb-1 grayscale group-hover:grayscale-0 transition-all">{icon}</span>
+        <span className="text-[10px] text-zinc-600 font-mono group-hover:text-zinc-400 transition-colors">{name}</span>
+      </div>
+    );
+
+    const integrations = [
+      { name: 'Slack', icon: '💬' },
+      { name: 'WhatsApp', icon: '📱' },
+      { name: 'Trello', icon: '📋' },
+      { name: 'Notion', icon: '📝' },
+      { name: 'Gmail', icon: '✉️' },
+      { name: 'Linear', icon: '🔷' },
+      { name: 'Discord', icon: '🎮' },
+      { name: 'Asana', icon: '🎯' },
+      { name: 'Jira', icon: '🔧' },
+      { name: 'GitHub', icon: '🐙' },
+      { name: 'Teams', icon: '👥' },
+      { name: 'Calendar', icon: '📅' },
+    ];
+
+    const features = [
+      { title: 'Hire AI Workers', description: 'Deploy specialized AI agents for any role. Each worker learns your processes and improves over time.', tag: '01' },
+      { title: 'Works Where You Work', description: 'Your AI workforce lives in Slack, WhatsApp, Trello, and 50+ tools your team already uses.', tag: '02' },
+      { title: 'Manage Like a Team', description: 'Assign tasks, track performance, and scale your workforce on demand.', tag: '03' },
+      { title: 'Enterprise Ready', description: 'Production-grade infrastructure. Your data stays in your environment.', tag: '04' },
+    ];
+
+    function HeadquartersLanding() {
+      const [email, setEmail] = useState('');
+      const [submitted, setSubmitted] = useState(false);
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (email) setSubmitted(true);
+      };
+
+      return (
+        <div className="min-h-screen bg-black text-white font-sans antialiased">
+          <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-zinc-900/80">
+            <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+              <Logo className="text-white" />
+              <div className="hidden md:flex items-center gap-8">
+                <a href="/workers" className="text-xs font-mono text-zinc-500 hover:text-white transition-colors">Workers</a>
+                <a href="/integrations" className="text-xs font-mono text-zinc-500 hover:text-white transition-colors">Integrations</a>
+                <a href="/contact" className="text-xs font-mono text-zinc-500 hover:text-white transition-colors">Contact</a>
+              </div>
+              <a href="#waitlist" className="px-4 py-2 bg-white text-black text-xs font-mono font-medium rounded hover:bg-zinc-200 transition-colors">Join Waitlist</a>
+            </div>
+          </nav>
+
+          <section className="pt-40 pb-32 px-6">
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900/50 rounded-full border border-zinc-800/50 mb-12">
+                <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Powered by Agno</span>
+              </div>
+              <h1 className="font-mono text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8" style={{lineHeight: '1.05'}}>Hire and manage<br />your AI workforce</h1>
+              <p className="text-base text-zinc-500 max-w-md mx-auto mb-14 leading-relaxed font-light">Deploy AI workers into Slack, WhatsApp, Trello, and the tools your team already uses. No new interfaces.</p>
+              <div id="waitlist" className="max-w-sm mx-auto">
+                {!submitted ? (
+                  <form onSubmit={handleSubmit} className="flex gap-2">
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" className="flex-1 px-4 py-3 bg-zinc-950 border border-zinc-800 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-colors font-mono text-sm" required />
+                    <button type="submit" className="px-5 py-3 bg-white text-black font-mono font-semibold rounded hover:bg-zinc-200 transition-colors whitespace-nowrap text-sm">Get Access</button>
+                  </form>
+                ) : (
+                  <div className="flex items-center justify-center gap-2 px-6 py-4 border border-zinc-800 rounded">
+                    <span className="text-white font-mono text-sm">You're in — we'll be in touch.</span>
+                  </div>
+                )}
+                <p className="text-[11px] text-zinc-700 mt-4 font-mono">2,000+ teams on the waitlist</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="py-24 px-6 border-t border-zinc-900/50">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-14"><p className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em]">Works where you work</p></div>
+              <div className="flex flex-wrap justify-center gap-2">{integrations.map((integration) => (<IntegrationLogo key={integration.name} {...integration} />))}</div>
+              <p className="text-center text-zinc-700 mt-12 text-[11px] font-mono">+ 50 more integrations</p>
+            </div>
+          </section>
+
+          <section className="py-28 px-6 border-t border-zinc-900/50">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-20">
+                <h2 className="font-mono text-2xl md:text-3xl font-bold mb-4 tracking-tight">The future of work is hybrid</h2>
+                <p className="text-zinc-600 max-w-sm mx-auto text-sm font-light">Human creativity + AI execution</p>
+              </div>
+              <div className="grid md:grid-cols-2 gap-3">
+                {features.map((feature, index) => (
+                  <div key={index} className="p-6 bg-zinc-950/50 rounded-lg border border-zinc-900/50 hover:border-zinc-800 transition-all group">
+                    <div className="flex items-start gap-4">
+                      <span className="font-mono text-[10px] text-zinc-700 mt-0.5">{feature.tag}</span>
+                      <div>
+                        <h3 className="font-mono text-sm font-semibold mb-2 group-hover:text-white transition-colors text-zinc-300">{feature.title}</h3>
+                        <p className="text-zinc-600 text-sm leading-relaxed">{feature.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="py-28 px-6 border-t border-zinc-900/50">
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-16">
+                <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">How it works</p>
+                <h2 className="font-mono text-2xl md:text-3xl font-bold tracking-tight">Three steps</h2>
+              </div>
+              <div className="space-y-0">
+                {[
+                  { step: '01', title: 'Define the role', description: 'Describe what you need. We match you with the right AI worker.' },
+                  { step: '02', title: 'Connect your tools', description: 'Link Slack, email, project boards. Your AI worker learns instantly.' },
+                  { step: '03', title: 'Start delegating', description: 'Assign tasks through chat. Your AI worker executes and improves.' },
+                ].map((item, index) => (
+                  <div key={index} className="flex gap-6 items-start p-6 rounded-lg hover:bg-zinc-950/50 transition-colors group border-b border-zinc-900/30 last:border-0">
+                    <div className="font-mono text-lg font-bold text-zinc-800 group-hover:text-zinc-600 transition-colors">{item.step}</div>
+                    <div>
+                      <h3 className="font-mono text-sm font-semibold mb-1 text-zinc-300">{item.title}</h3>
+                      <p className="text-zinc-600 text-sm">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="py-28 px-6 border-t border-zinc-900/50">
+            <div className="max-w-md mx-auto text-center">
+              <h2 className="font-mono text-2xl md:text-3xl font-bold mb-4 tracking-tight">Ready to scale?</h2>
+              <p className="text-zinc-600 mb-10 text-sm font-light">Join the waitlist for early access.</p>
+              {!submitted ? (
+                <form onSubmit={handleSubmit} className="flex gap-2 max-w-sm mx-auto">
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" className="flex-1 px-4 py-3 bg-zinc-950 border border-zinc-800 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-colors font-mono text-sm" required />
+                  <button type="submit" className="px-5 py-3 bg-white text-black font-mono font-semibold rounded hover:bg-zinc-200 transition-colors whitespace-nowrap text-sm">Get Access</button>
+                </form>
+              ) : (
+                <div className="flex items-center justify-center gap-2 px-6 py-4 border border-zinc-800 rounded max-w-sm mx-auto">
+                  <span className="text-white font-mono text-sm">You're in.</span>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <footer className="py-10 px-6 border-t border-zinc-900/50">
+            <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+              <Logo size="small" className="text-zinc-700" />
+              <div className="flex items-center gap-8 text-[11px] font-mono text-zinc-700">
+                <span>© 2026</span>
+                <a href="#" className="hover:text-white transition-colors">Privacy</a>
+                <a href="#" className="hover:text-white transition-colors">Terms</a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<HeadquartersLanding />);
+  </script>
+</body>
+</html>
