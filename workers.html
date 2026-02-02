@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Workforce | Headquarters</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::selection { background: #10b981; color: #000; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const Logo = ({ className = "", size = "default" }) => (
+      <a href="/" className={`font-mono font-bold tracking-tight flex items-center gap-1.5 ${className} hover:opacity-80 transition-opacity`}>
+        <span className={size === "small" ? "text-base" : "text-xl"}>headquarters</span>
+        <span className={`${size === "small" ? "w-1.5 h-1.5" : "w-2 h-2"} bg-emerald-500 rounded-sm`}></span>
+      </a>
+    );
+
+    const teams = {
+      cto: { title: "CTO", name: "Technology & Product", color: "border-blue-500/30 bg-blue-500/5",
+        subteams: [
+          { name: "Engineering", workers: [
+            { title: "Head of Engineering", role: "Leadership & architecture" },
+            { title: "Senior Engineer", role: "Core development" },
+            { title: "Engineer", role: "Feature implementation" },
+            { title: "QA Engineer", role: "Quality assurance" }
+          ]},
+          { name: "Product", workers: [
+            { title: "Head of Product", role: "Strategy & roadmap" },
+            { title: "Product Manager", role: "Feature ownership" },
+            { title: "Product Designer", role: "UX/UI design" },
+            { title: "UX Researcher", role: "User insights" }
+          ]},
+          { name: "Infrastructure", workers: [
+            { title: "DevOps Lead", role: "Deployments & CI/CD" },
+            { title: "Security Engineer", role: "Security & compliance" }
+          ]}
+        ]
+      },
+      cmo: { title: "CMO", name: "Marketing & Growth", color: "border-purple-500/30 bg-purple-500/5",
+        subteams: [
+          { name: "Marketing", workers: [
+            { title: "Head of Marketing", role: "Marketing strategy" },
+            { title: "Content Writer", role: "Content creation" },
+            { title: "Campaign Manager", role: "Campaign execution" },
+            { title: "SEO Specialist", role: "Search optimization" }
+          ]},
+          { name: "Sales", workers: [
+            { title: "Head of Sales", role: "Sales leadership" },
+            { title: "Account Executive", role: "Deal closing" },
+            { title: "Sales Development Rep", role: "Lead generation" },
+            { title: "Sales Operations", role: "Sales enablement" }
+          ]},
+          { name: "Growth", workers: [
+            { title: "Head of Growth", role: "Growth strategy" },
+            { title: "Growth Marketer", role: "Acquisition" },
+            { title: "Community Manager", role: "Community & social" }
+          ]}
+        ]
+      },
+      cfo: { title: "CFO", name: "Finance & Legal", color: "border-emerald-500/30 bg-emerald-500/5",
+        subteams: [
+          { name: "Finance", workers: [
+            { title: "Head of Finance", role: "Financial strategy" },
+            { title: "Financial Analyst", role: "Analysis & reporting" },
+            { title: "Controller", role: "Financial controls" }
+          ]},
+          { name: "Accounting", workers: [
+            { title: "Head of Accounting", role: "Accounting operations" },
+            { title: "Staff Accountant", role: "Bookkeeping" },
+            { title: "AP/AR Specialist", role: "Payables & receivables" }
+          ]},
+          { name: "Legal", workers: [
+            { title: "General Counsel", role: "Legal strategy" },
+            { title: "Contracts Manager", role: "Contract management" },
+            { title: "Compliance Officer", role: "Regulatory" }
+          ]}
+        ]
+      },
+      coo: { title: "COO", name: "Operations & People", color: "border-orange-500/30 bg-orange-500/5",
+        subteams: [
+          { name: "Operations", workers: [
+            { title: "Head of Operations", role: "Ops strategy" },
+            { title: "Operations Manager", role: "Process execution" },
+            { title: "Business Analyst", role: "Data & insights" }
+          ]},
+          { name: "People / HR", workers: [
+            { title: "Head of HR", role: "People strategy" },
+            { title: "Recruiter", role: "Talent acquisition" },
+            { title: "People Partner", role: "Employee relations" },
+            { title: "Onboarding Specialist", role: "New hire experience" }
+          ]},
+          { name: "Customer Success", workers: [
+            { title: "Head of Support", role: "Support strategy" },
+            { title: "Support Specialist", role: "Customer service" },
+            { title: "Customer Success Manager", role: "Account health" }
+          ]},
+          { name: "Admin", workers: [
+            { title: "Office Manager", role: "Office operations" },
+            { title: "Executive Assistant", role: "Executive support" }
+          ]}
+        ]
+      }
+    };
+
+    const WorkerCard = ({ title, role, isLead = false }) => (
+      <div className={`p-3 rounded-lg border transition-all hover:border-zinc-700 ${isLead ? 'bg-zinc-900/80 border-zinc-700' : 'bg-zinc-950/50 border-zinc-900/50'}`}>
+        <div className="flex items-center gap-2">
+          <h4 className="font-mono text-xs font-semibold text-white">{title}</h4>
+          {isLead && <span className="text-[9px] px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 rounded font-mono">LEAD</span>}
+        </div>
+        <p className="text-[10px] text-zinc-500 mt-0.5">{role}</p>
+      </div>
+    );
+
+    const SubteamSection = ({ name, workers }) => (
+      <div className="space-y-2">
+        <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mb-2">{name}</h4>
+        <div className="grid gap-2">
+          {workers.map((worker, i) => <WorkerCard key={i} {...worker} isLead={i === 0} />)}
+        </div>
+      </div>
+    );
+
+    function WorkersPage() {
+      const [activeTeam, setActiveTeam] = useState('cto');
+
+      return (
+        <div className="min-h-screen bg-black text-white font-sans antialiased">
+          <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-zinc-900/80">
+            <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+              <Logo className="text-white" />
+              <div className="hidden md:flex items-center gap-8">
+                <a href="/workers" className="text-xs font-mono text-white">Workers</a>
+                <a href="/integrations" className="text-xs font-mono text-zinc-500 hover:text-white transition-colors">Integrations</a>
+                <a href="/contact" className="text-xs font-mono text-zinc-500 hover:text-white transition-colors">Contact</a>
+              </div>
+              <a href="/#waitlist" className="px-4 py-2 bg-white text-black text-xs font-mono font-medium rounded hover:bg-zinc-200 transition-colors">Join Waitlist</a>
+            </div>
+          </nav>
+
+          <section className="pt-32 pb-16 px-6">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900/50 rounded-full border border-zinc-800/50 mb-8">
+                <span className="w-1 h-1 bg-emerald-500 rounded-full"></span>
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">38 AI Workers · 14 Teams · 4 Leads</span>
+              </div>
+              <h1 className="font-mono text-4xl md:text-5xl font-bold tracking-tight mb-6" style={{lineHeight: '1.1'}}>Your complete AI workforce</h1>
+              <p className="text-base text-zinc-500 max-w-xl mx-auto leading-relaxed">Organized like a real company. Four C-level leads manage specialized teams that work together seamlessly.</p>
+            </div>
+          </section>
+
+          <section className="px-6 pb-8">
+            <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-3">
+              {Object.entries(teams).map(([key, team]) => (
+                <button key={key} onClick={() => setActiveTeam(key)} className={`px-4 py-2 rounded-lg font-mono text-xs transition-all ${activeTeam === key ? 'bg-white text-black' : 'bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800'}`}>{team.title} Team</button>
+              ))}
+            </div>
+          </section>
+
+          <section className="px-6 pb-20">
+            <div className="max-w-6xl mx-auto">
+              {Object.entries(teams).map(([key, team]) => activeTeam === key && (
+                <div key={key} className={`rounded-2xl border p-8 ${team.color}`}>
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center">
+                      <span className="font-mono font-bold text-lg">{team.title}</span>
+                    </div>
+                    <div>
+                      <h2 className="font-mono text-2xl font-bold">{team.name}</h2>
+                      <p className="text-xs text-zinc-500 font-mono uppercase tracking-wider">Team Lead</p>
+                    </div>
+                  </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {team.subteams.map((subteam, i) => <SubteamSection key={i} {...subteam} />)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="py-20 px-6 border-t border-zinc-900/50 bg-zinc-950/50">
+            <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div><div className="font-mono text-4xl font-bold text-white mb-2">4</div><div className="text-xs font-mono text-zinc-500 uppercase">C-Level Leads</div></div>
+              <div><div className="font-mono text-4xl font-bold text-white mb-2">14</div><div className="text-xs font-mono text-zinc-500 uppercase">Subteams</div></div>
+              <div><div className="font-mono text-4xl font-bold text-white mb-2">38</div><div className="text-xs font-mono text-zinc-500 uppercase">AI Workers</div></div>
+              <div><div className="font-mono text-4xl font-bold text-white mb-2">50+</div><div className="text-xs font-mono text-zinc-500 uppercase">Integrations</div></div>
+            </div>
+          </section>
+
+          <section className="py-24 px-6 border-t border-zinc-900/50">
+            <div className="max-w-xl mx-auto text-center">
+              <h2 className="font-mono text-2xl md:text-3xl font-bold mb-4">Build your AI workforce</h2>
+              <p className="text-zinc-600 mb-8 text-sm">Start with one team, scale to a full organization.</p>
+              <a href="/#waitlist" className="inline-block px-6 py-3 bg-white text-black font-mono font-semibold rounded hover:bg-zinc-200 transition-colors text-sm">Get Early Access</a>
+            </div>
+          </section>
+
+          <footer className="py-10 px-6 border-t border-zinc-900/50">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+              <Logo size="small" className="text-zinc-700" />
+              <div className="flex items-center gap-8 text-[11px] font-mono text-zinc-700">
+                <span>© 2026</span>
+                <a href="#" className="hover:text-white transition-colors">Privacy</a>
+                <a href="#" className="hover:text-white transition-colors">Terms</a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<WorkersPage />);
+  </script>
+</body>
+</html>
